@@ -66,6 +66,29 @@ function DevicesPage() {
 
   useEffect(() => {
     load();
+
+    const channel = supabase
+      .channel("devices-stream")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "devices" },
+        (payload) => {
+          if (payload.eventType === "INSERT") {
+            setDevices((prev) => [payload.new as Device, ...prev]);
+          } else if (payload.eventType === "UPDATE") {
+            setDevices((prev) =>
+              prev.map((d) => (d.id === (payload.new as Device).id ? (payload.new as Device) : d)),
+            );
+          } else if (payload.eventType === "DELETE") {
+            setDevices((prev) => prev.filter((d) => d.id !== (payload.old as Device).id));
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const addDevice = async () => {

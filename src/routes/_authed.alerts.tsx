@@ -48,6 +48,27 @@ function AlertsPage() {
       else setAlerts((data as Alert[]) ?? []);
       setLoading(false);
     })();
+
+    const channel = supabase
+      .channel("alerts-stream")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "alerts" },
+        (payload) => {
+          const next = payload.new as Alert;
+          setAlerts((prev) => [next, ...prev].slice(0, 200));
+          if (next.severity === "critical") {
+            toast.error(`Critical: ${next.action_type}${next.target ? ` → ${next.target}` : ""}`);
+          } else if (next.severity === "warning") {
+            toast.warning(`${next.action_type}${next.target ? ` → ${next.target}` : ""}`);
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return (
