@@ -89,16 +89,22 @@ function RequestsPage() {
       return;
     }
     setSubmitting(true);
-    const payload: Record<string, unknown> =
-      type === "uninstall" ? {} : type === "domain" ? { domain: target.trim() } : { extension: target.trim() };
+    const payload =
+      type === "uninstall"
+        ? {}
+        : type === "domain"
+          ? { domain: target.trim() }
+          : { extension: target.trim() };
 
-    const { error } = await supabase.from("requests").insert({
-      user_id: user.id,
-      request_type: type,
-      payload,
-      reason: reason.trim() || null,
-      status: "pending",
-    });
+    const { error } = await supabase.from("requests").insert([
+      {
+        user_id: user.id,
+        request_type: type,
+        payload,
+        reason: reason.trim() || null,
+        status: "pending",
+      },
+    ]);
     setSubmitting(false);
     if (error) {
       toast.error(error.message);

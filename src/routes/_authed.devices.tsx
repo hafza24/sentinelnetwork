@@ -96,7 +96,11 @@ function DevicesPage() {
     field: "firewall_enabled" | "download_restriction_enabled",
     value: boolean,
   ) => {
-    const { error } = await supabase.from("devices").update({ [field]: value }).eq("id", id);
+    const patch =
+      field === "firewall_enabled"
+        ? { firewall_enabled: value }
+        : { download_restriction_enabled: value };
+    const { error } = await supabase.from("devices").update(patch).eq("id", id);
     if (error) {
       toast.error(error.message);
       return;
