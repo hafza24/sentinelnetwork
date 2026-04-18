@@ -14,16 +14,301 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          action_type: string
+          created_at: string
+          device_id: string | null
+          id: string
+          metadata: Json | null
+          severity: Database["public"]["Enums"]["alert_severity"]
+          target: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          target?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json | null
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          target?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      devices: {
+        Row: {
+          agent_version: string | null
+          created_at: string
+          device_name: string
+          download_restriction_enabled: boolean
+          firewall_enabled: boolean
+          hostname: string | null
+          id: string
+          ip_address: string | null
+          last_seen: string | null
+          os: string | null
+          status: Database["public"]["Enums"]["device_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_version?: string | null
+          created_at?: string
+          device_name: string
+          download_restriction_enabled?: boolean
+          firewall_enabled?: boolean
+          hostname?: string | null
+          id?: string
+          ip_address?: string | null
+          last_seen?: string | null
+          os?: string | null
+          status?: Database["public"]["Enums"]["device_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_version?: string | null
+          created_at?: string
+          device_name?: string
+          download_restriction_enabled?: boolean
+          firewall_enabled?: boolean
+          hostname?: string | null
+          id?: string
+          ip_address?: string | null
+          last_seen?: string | null
+          os?: string | null
+          status?: Database["public"]["Enums"]["device_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      domains: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          device_id: string | null
+          domain_name: string
+          id: string
+          is_blocked: boolean
+          scope: Database["public"]["Enums"]["rule_scope"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          device_id?: string | null
+          domain_name: string
+          id?: string
+          is_blocked?: boolean
+          scope?: Database["public"]["Enums"]["rule_scope"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          device_id?: string | null
+          domain_name?: string
+          id?: string
+          is_blocked?: boolean
+          scope?: Database["public"]["Enums"]["rule_scope"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "domains_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      downloads: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          device_id: string | null
+          extension: string
+          id: string
+          is_blocked: boolean
+          scope: Database["public"]["Enums"]["rule_scope"]
+          size_limit_mb: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          device_id?: string | null
+          extension: string
+          id?: string
+          is_blocked?: boolean
+          scope?: Database["public"]["Enums"]["rule_scope"]
+          size_limit_mb?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          device_id?: string | null
+          extension?: string
+          id?: string
+          is_blocked?: boolean
+          scope?: Database["public"]["Enums"]["rule_scope"]
+          size_limit_mb?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "downloads_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          ip_address: string | null
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          ip_address?: string | null
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          ip_address?: string | null
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      requests: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          id: string
+          payload: Json
+          reason: string | null
+          request_type: Database["public"]["Enums"]["request_type"]
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["request_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          payload?: Json
+          reason?: string | null
+          request_type: Database["public"]["Enums"]["request_type"]
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          payload?: Json
+          reason?: string | null
+          request_type?: Database["public"]["Enums"]["request_type"]
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "requests_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      alert_severity: "info" | "warning" | "critical"
+      app_role: "admin" | "user"
+      device_status: "active" | "inactive" | "disabled"
+      request_status: "pending" | "approved" | "rejected"
+      request_type: "domain" | "download" | "uninstall"
+      rule_scope: "global" | "device"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +435,13 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      alert_severity: ["info", "warning", "critical"],
+      app_role: ["admin", "user"],
+      device_status: ["active", "inactive", "disabled"],
+      request_status: ["pending", "approved", "rejected"],
+      request_type: ["domain", "download", "uninstall"],
+      rule_scope: ["global", "device"],
+    },
   },
 } as const
