@@ -55,6 +55,36 @@ export type Database = {
           },
         ]
       }
+      app_settings: {
+        Row: {
+          download_restriction_enabled: boolean
+          firewall_enabled: boolean
+          id: string
+          process_enforcement_enabled: boolean
+          singleton: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          download_restriction_enabled?: boolean
+          firewall_enabled?: boolean
+          id?: string
+          process_enforcement_enabled?: boolean
+          singleton?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          download_restriction_enabled?: boolean
+          firewall_enabled?: boolean
+          id?: string
+          process_enforcement_enabled?: boolean
+          singleton?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       devices: {
         Row: {
           agent_version: string | null
