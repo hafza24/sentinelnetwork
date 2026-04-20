@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedRequestsRouteImport } from './routes/_authed.requests'
+import { Route as AuthedProcessesRouteImport } from './routes/_authed.processes'
 import { Route as AuthedDownloadsRouteImport } from './routes/_authed.downloads'
 import { Route as AuthedDomainsRouteImport } from './routes/_authed.domains'
 import { Route as AuthedDevicesRouteImport } from './routes/_authed.devices'
@@ -42,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthedRequestsRoute = AuthedRequestsRouteImport.update({
   id: '/requests',
   path: '/requests',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedProcessesRoute = AuthedProcessesRouteImport.update({
+  id: '/processes',
+  path: '/processes',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedDownloadsRoute = AuthedDownloadsRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
+  '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
 }
 export interface FileRoutesByTo {
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
+  '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
 }
 export interface FileRoutesById {
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/_authed/devices': typeof AuthedDevicesRoute
   '/_authed/domains': typeof AuthedDomainsRoute
   '/_authed/downloads': typeof AuthedDownloadsRoute
+  '/_authed/processes': typeof AuthedProcessesRoute
   '/_authed/requests': typeof AuthedRequestsRoute
 }
 export interface FileRouteTypes {
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/devices'
     | '/domains'
     | '/downloads'
+    | '/processes'
     | '/requests'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/devices'
     | '/domains'
     | '/downloads'
+    | '/processes'
     | '/requests'
   id:
     | '__root__'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/_authed/devices'
     | '/_authed/domains'
     | '/_authed/downloads'
+    | '/_authed/processes'
     | '/_authed/requests'
   fileRoutesById: FileRoutesById
 }
@@ -186,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedRequestsRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/processes': {
+      id: '/_authed/processes'
+      path: '/processes'
+      fullPath: '/processes'
+      preLoaderRoute: typeof AuthedProcessesRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/downloads': {
       id: '/_authed/downloads'
       path: '/downloads'
@@ -230,6 +249,7 @@ interface AuthedRouteChildren {
   AuthedDevicesRoute: typeof AuthedDevicesRoute
   AuthedDomainsRoute: typeof AuthedDomainsRoute
   AuthedDownloadsRoute: typeof AuthedDownloadsRoute
+  AuthedProcessesRoute: typeof AuthedProcessesRoute
   AuthedRequestsRoute: typeof AuthedRequestsRoute
 }
 
@@ -239,6 +259,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedDevicesRoute: AuthedDevicesRoute,
   AuthedDomainsRoute: AuthedDomainsRoute,
   AuthedDownloadsRoute: AuthedDownloadsRoute,
+  AuthedProcessesRoute: AuthedProcessesRoute,
   AuthedRequestsRoute: AuthedRequestsRoute,
 }
 
@@ -254,3 +275,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

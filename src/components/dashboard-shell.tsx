@@ -10,6 +10,7 @@ import {
   Inbox,
   LogOut,
   Activity,
+  Cpu,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ const NAV: NavItem[] = [
   { to: "/devices", label: "Devices", icon: Monitor },
   { to: "/domains", label: "Domains", icon: Globe },
   { to: "/downloads", label: "Downloads", icon: Download },
+  { to: "/processes", label: "Processes", icon: Cpu },
   { to: "/alerts", label: "Alerts", icon: AlertTriangle },
   { to: "/requests", label: "Requests", icon: Inbox },
 ];
