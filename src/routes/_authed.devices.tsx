@@ -234,6 +234,7 @@ function DevicesPage() {
                     <Switch
                       checked={d.firewall_enabled}
                       onCheckedChange={(v) => toggle(d.id, "firewall_enabled", v)}
+                      disabled={!isAdmin}
                     />
                   </label>
                   <label className="flex items-center gap-2 text-xs">
@@ -241,6 +242,7 @@ function DevicesPage() {
                     <Switch
                       checked={d.download_restriction_enabled}
                       onCheckedChange={(v) => toggle(d.id, "download_restriction_enabled", v)}
+                      disabled={!isAdmin}
                     />
                   </label>
                 </div>
