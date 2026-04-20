@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthedSettingsRouteImport } from './routes/_authed.settings'
 import { Route as AuthedRequestsRouteImport } from './routes/_authed.requests'
 import { Route as AuthedProcessesRouteImport } from './routes/_authed.processes'
 import { Route as AuthedDownloadsRouteImport } from './routes/_authed.downloads'
@@ -39,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedRequestsRoute = AuthedRequestsRouteImport.update({
   id: '/requests',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/downloads': typeof AuthedDownloadsRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
+  '/settings': typeof AuthedSettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/downloads': typeof AuthedDownloadsRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
+  '/settings': typeof AuthedSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/_authed/downloads': typeof AuthedDownloadsRoute
   '/_authed/processes': typeof AuthedProcessesRoute
   '/_authed/requests': typeof AuthedRequestsRoute
+  '/_authed/settings': typeof AuthedSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/downloads'
     | '/processes'
     | '/requests'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/downloads'
     | '/processes'
     | '/requests'
+    | '/settings'
   id:
     | '__root__'
     | '/'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/_authed/downloads'
     | '/_authed/processes'
     | '/_authed/requests'
+    | '/_authed/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -190,6 +202,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authed/settings': {
+      id: '/_authed/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthedSettingsRouteImport
+      parentRoute: typeof AuthedRoute
     }
     '/_authed/requests': {
       id: '/_authed/requests'
@@ -251,6 +270,7 @@ interface AuthedRouteChildren {
   AuthedDownloadsRoute: typeof AuthedDownloadsRoute
   AuthedProcessesRoute: typeof AuthedProcessesRoute
   AuthedRequestsRoute: typeof AuthedRequestsRoute
+  AuthedSettingsRoute: typeof AuthedSettingsRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
@@ -261,6 +281,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedDownloadsRoute: AuthedDownloadsRoute,
   AuthedProcessesRoute: AuthedProcessesRoute,
   AuthedRequestsRoute: AuthedRequestsRoute,
+  AuthedSettingsRoute: AuthedSettingsRoute,
 }
 
 const AuthedRouteWithChildren =
@@ -275,3 +296,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

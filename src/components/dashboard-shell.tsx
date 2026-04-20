@@ -11,6 +11,7 @@ import {
   LogOut,
   Activity,
   Cpu,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ const NAV: NavItem[] = [
   { to: "/processes", label: "Processes", icon: Cpu },
   { to: "/alerts", label: "Alerts", icon: AlertTriangle },
   { to: "/requests", label: "Requests", icon: Inbox },
+  { to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {
