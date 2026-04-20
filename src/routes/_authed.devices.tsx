@@ -141,53 +141,55 @@ function DevicesPage() {
             {isAdmin ? "All registered agents across the grid." : "Devices linked to your account."}
           </p>
         </div>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" /> Register device
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Register device</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Device name</Label>
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="HQ-Workstation-01"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Hostname (optional)</Label>
-                <Input
-                  value={hostname}
-                  onChange={(e) => setHostname(e.target.value)}
-                  placeholder="hq-ws-01.local"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>OS (optional)</Label>
-                <Input
-                  value={os}
-                  onChange={(e) => setOs(e.target.value)}
-                  placeholder="Windows 11 / Ubuntu 22.04"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="ghost" onClick={() => setOpen(false)}>
-                Cancel
+        {isAdmin && (
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" /> Register device
               </Button>
-              <Button onClick={addDevice} disabled={submitting || !name.trim()}>
-                {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Register
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Register device</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Device name</Label>
+                  <Input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="HQ-Workstation-01"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Hostname (optional)</Label>
+                  <Input
+                    value={hostname}
+                    onChange={(e) => setHostname(e.target.value)}
+                    placeholder="hq-ws-01.local"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>OS (optional)</Label>
+                  <Input
+                    value={os}
+                    onChange={(e) => setOs(e.target.value)}
+                    placeholder="Windows 11 / Ubuntu 22.04"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={addDevice} disabled={submitting || !name.trim()}>
+                  {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Register
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       {loading ? (
@@ -232,6 +234,7 @@ function DevicesPage() {
                     <Switch
                       checked={d.firewall_enabled}
                       onCheckedChange={(v) => toggle(d.id, "firewall_enabled", v)}
+                      disabled={!isAdmin}
                     />
                   </label>
                   <label className="flex items-center gap-2 text-xs">
@@ -239,6 +242,7 @@ function DevicesPage() {
                     <Switch
                       checked={d.download_restriction_enabled}
                       onCheckedChange={(v) => toggle(d.id, "download_restriction_enabled", v)}
+                      disabled={!isAdmin}
                     />
                   </label>
                 </div>
