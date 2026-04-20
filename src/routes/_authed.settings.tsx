@@ -73,9 +73,19 @@ function SettingsPage() {
   ) => {
     if (!settings || !isAdmin) return;
     setBusy(field);
+    const patch: {
+      firewall_enabled?: boolean;
+      download_restriction_enabled?: boolean;
+      process_enforcement_enabled?: boolean;
+      updated_by: string | null;
+    } = { updated_by: user?.id ?? null };
+    if (field === "firewall_enabled") patch.firewall_enabled = value;
+    else if (field === "download_restriction_enabled")
+      patch.download_restriction_enabled = value;
+    else patch.process_enforcement_enabled = value;
     const { error } = await supabase
       .from("app_settings")
-      .update({ [field]: value, updated_by: user?.id ?? null })
+      .update(patch)
       .eq("id", settings.id);
     setBusy(null);
     if (error) {
