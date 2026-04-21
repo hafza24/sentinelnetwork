@@ -11,6 +11,8 @@ import {
   LogOut,
   Activity,
   Cpu,
+  Clock,
+  Zap,
   Settings as SettingsIcon,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
@@ -30,6 +32,8 @@ const NAV: NavItem[] = [
   { to: "/domains", label: "Domains", icon: Globe },
   { to: "/downloads", label: "Downloads", icon: Download },
   { to: "/processes", label: "Processes", icon: Cpu },
+  { to: "/schedules", label: "Schedules", icon: Clock },
+  { to: "/auto-response", label: "Auto-Response", icon: Zap },
   { to: "/alerts", label: "Alerts", icon: AlertTriangle },
   { to: "/requests", label: "Requests", icon: Inbox },
   { to: "/settings", label: "Settings", icon: SettingsIcon },
