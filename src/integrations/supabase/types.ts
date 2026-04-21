@@ -85,6 +85,54 @@ export type Database = {
         }
         Relationships: []
       }
+      auto_response_rules: {
+        Row: {
+          action: Database["public"]["Enums"]["auto_response_action"]
+          action_duration_minutes: number
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          name: string
+          severity_filter: Database["public"]["Enums"]["alert_severity"] | null
+          source_filter: Database["public"]["Enums"]["violation_source"] | null
+          time_window_minutes: number
+          trigger_type: Database["public"]["Enums"]["auto_response_trigger"]
+          updated_at: string
+          violation_threshold: number
+        }
+        Insert: {
+          action?: Database["public"]["Enums"]["auto_response_action"]
+          action_duration_minutes?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          severity_filter?: Database["public"]["Enums"]["alert_severity"] | null
+          source_filter?: Database["public"]["Enums"]["violation_source"] | null
+          time_window_minutes?: number
+          trigger_type?: Database["public"]["Enums"]["auto_response_trigger"]
+          updated_at?: string
+          violation_threshold?: number
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["auto_response_action"]
+          action_duration_minutes?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          severity_filter?: Database["public"]["Enums"]["alert_severity"] | null
+          source_filter?: Database["public"]["Enums"]["violation_source"] | null
+          time_window_minutes?: number
+          trigger_type?: Database["public"]["Enums"]["auto_response_trigger"]
+          updated_at?: string
+          violation_threshold?: number
+        }
+        Relationships: []
+      }
       devices: {
         Row: {
           agent_version: string | null
@@ -211,6 +259,65 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "downloads_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      policy_schedules: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          days_of_week: number[]
+          device_id: string | null
+          end_time: string
+          id: string
+          is_active: boolean
+          name: string
+          scope: Database["public"]["Enums"]["rule_scope"]
+          start_time: string
+          target_type: Database["public"]["Enums"]["schedule_target_type"]
+          target_value: string
+          timezone: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          days_of_week?: number[]
+          device_id?: string | null
+          end_time: string
+          id?: string
+          is_active?: boolean
+          name: string
+          scope?: Database["public"]["Enums"]["rule_scope"]
+          start_time: string
+          target_type: Database["public"]["Enums"]["schedule_target_type"]
+          target_value: string
+          timezone?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          days_of_week?: number[]
+          device_id?: string | null
+          end_time?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          scope?: Database["public"]["Enums"]["rule_scope"]
+          start_time?: string
+          target_type?: Database["public"]["Enums"]["schedule_target_type"]
+          target_value?: string
+          timezone?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "policy_schedules_device_id_fkey"
             columns: ["device_id"]
             isOneToOne: false
             referencedRelation: "devices"
@@ -346,6 +453,44 @@ export type Database = {
         }
         Relationships: []
       }
+      violation_events: {
+        Row: {
+          device_id: string | null
+          id: string
+          occurred_at: string
+          severity: Database["public"]["Enums"]["alert_severity"]
+          source: Database["public"]["Enums"]["violation_source"]
+          target: string | null
+          user_id: string | null
+        }
+        Insert: {
+          device_id?: string | null
+          id?: string
+          occurred_at?: string
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          source: Database["public"]["Enums"]["violation_source"]
+          target?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          device_id?: string | null
+          id?: string
+          occurred_at?: string
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          source?: Database["public"]["Enums"]["violation_source"]
+          target?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "violation_events_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -362,10 +507,18 @@ export type Database = {
     Enums: {
       alert_severity: "info" | "warning" | "critical"
       app_role: "admin" | "user"
+      auto_response_action:
+        | "log_only"
+        | "temp_block_all"
+        | "disable_network"
+        | "lock_device"
+      auto_response_trigger: "violation_count" | "single_violation"
       device_status: "active" | "inactive" | "disabled"
       request_status: "pending" | "approved" | "rejected"
       request_type: "domain" | "download" | "uninstall"
       rule_scope: "global" | "device"
+      schedule_target_type: "domain" | "process"
+      violation_source: "domain" | "download" | "process"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -495,10 +648,19 @@ export const Constants = {
     Enums: {
       alert_severity: ["info", "warning", "critical"],
       app_role: ["admin", "user"],
+      auto_response_action: [
+        "log_only",
+        "temp_block_all",
+        "disable_network",
+        "lock_device",
+      ],
+      auto_response_trigger: ["violation_count", "single_violation"],
       device_status: ["active", "inactive", "disabled"],
       request_status: ["pending", "approved", "rejected"],
       request_type: ["domain", "download", "uninstall"],
       rule_scope: ["global", "device"],
+      schedule_target_type: ["domain", "process"],
+      violation_source: ["domain", "download", "process"],
     },
   },
 } as const
