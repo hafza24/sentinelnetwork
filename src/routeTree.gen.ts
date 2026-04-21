@@ -14,12 +14,14 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed.settings'
+import { Route as AuthedSchedulesRouteImport } from './routes/_authed.schedules'
 import { Route as AuthedRequestsRouteImport } from './routes/_authed.requests'
 import { Route as AuthedProcessesRouteImport } from './routes/_authed.processes'
 import { Route as AuthedDownloadsRouteImport } from './routes/_authed.downloads'
 import { Route as AuthedDomainsRouteImport } from './routes/_authed.domains'
 import { Route as AuthedDevicesRouteImport } from './routes/_authed.devices'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed.dashboard'
+import { Route as AuthedAutoResponseRouteImport } from './routes/_authed.auto-response'
 import { Route as AuthedAlertsRouteImport } from './routes/_authed.alerts'
 
 const SignupRoute = SignupRouteImport.update({
@@ -44,6 +46,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedSchedulesRoute = AuthedSchedulesRouteImport.update({
+  id: '/schedules',
+  path: '/schedules',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedRequestsRoute = AuthedRequestsRouteImport.update({
@@ -76,6 +83,11 @@ const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedAutoResponseRoute = AuthedAutoResponseRouteImport.update({
+  id: '/auto-response',
+  path: '/auto-response',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedAlertsRoute = AuthedAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -87,12 +99,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/auto-response': typeof AuthedAutoResponseRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
+  '/schedules': typeof AuthedSchedulesRoute
   '/settings': typeof AuthedSettingsRoute
 }
 export interface FileRoutesByTo {
@@ -100,12 +114,14 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/auto-response': typeof AuthedAutoResponseRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
+  '/schedules': typeof AuthedSchedulesRoute
   '/settings': typeof AuthedSettingsRoute
 }
 export interface FileRoutesById {
@@ -115,12 +131,14 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_authed/alerts': typeof AuthedAlertsRoute
+  '/_authed/auto-response': typeof AuthedAutoResponseRoute
   '/_authed/dashboard': typeof AuthedDashboardRoute
   '/_authed/devices': typeof AuthedDevicesRoute
   '/_authed/domains': typeof AuthedDomainsRoute
   '/_authed/downloads': typeof AuthedDownloadsRoute
   '/_authed/processes': typeof AuthedProcessesRoute
   '/_authed/requests': typeof AuthedRequestsRoute
+  '/_authed/schedules': typeof AuthedSchedulesRoute
   '/_authed/settings': typeof AuthedSettingsRoute
 }
 export interface FileRouteTypes {
@@ -130,12 +148,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/alerts'
+    | '/auto-response'
     | '/dashboard'
     | '/devices'
     | '/domains'
     | '/downloads'
     | '/processes'
     | '/requests'
+    | '/schedules'
     | '/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,12 +163,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/alerts'
+    | '/auto-response'
     | '/dashboard'
     | '/devices'
     | '/domains'
     | '/downloads'
     | '/processes'
     | '/requests'
+    | '/schedules'
     | '/settings'
   id:
     | '__root__'
@@ -157,12 +179,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_authed/alerts'
+    | '/_authed/auto-response'
     | '/_authed/dashboard'
     | '/_authed/devices'
     | '/_authed/domains'
     | '/_authed/downloads'
     | '/_authed/processes'
     | '/_authed/requests'
+    | '/_authed/schedules'
     | '/_authed/settings'
   fileRoutesById: FileRoutesById
 }
@@ -210,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedSettingsRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/schedules': {
+      id: '/_authed/schedules'
+      path: '/schedules'
+      fullPath: '/schedules'
+      preLoaderRoute: typeof AuthedSchedulesRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/requests': {
       id: '/_authed/requests'
       path: '/requests'
@@ -252,6 +283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/auto-response': {
+      id: '/_authed/auto-response'
+      path: '/auto-response'
+      fullPath: '/auto-response'
+      preLoaderRoute: typeof AuthedAutoResponseRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/alerts': {
       id: '/_authed/alerts'
       path: '/alerts'
@@ -264,23 +302,27 @@ declare module '@tanstack/react-router' {
 
 interface AuthedRouteChildren {
   AuthedAlertsRoute: typeof AuthedAlertsRoute
+  AuthedAutoResponseRoute: typeof AuthedAutoResponseRoute
   AuthedDashboardRoute: typeof AuthedDashboardRoute
   AuthedDevicesRoute: typeof AuthedDevicesRoute
   AuthedDomainsRoute: typeof AuthedDomainsRoute
   AuthedDownloadsRoute: typeof AuthedDownloadsRoute
   AuthedProcessesRoute: typeof AuthedProcessesRoute
   AuthedRequestsRoute: typeof AuthedRequestsRoute
+  AuthedSchedulesRoute: typeof AuthedSchedulesRoute
   AuthedSettingsRoute: typeof AuthedSettingsRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAlertsRoute: AuthedAlertsRoute,
+  AuthedAutoResponseRoute: AuthedAutoResponseRoute,
   AuthedDashboardRoute: AuthedDashboardRoute,
   AuthedDevicesRoute: AuthedDevicesRoute,
   AuthedDomainsRoute: AuthedDomainsRoute,
   AuthedDownloadsRoute: AuthedDownloadsRoute,
   AuthedProcessesRoute: AuthedProcessesRoute,
   AuthedRequestsRoute: AuthedRequestsRoute,
+  AuthedSchedulesRoute: AuthedSchedulesRoute,
   AuthedSettingsRoute: AuthedSettingsRoute,
 }
 
