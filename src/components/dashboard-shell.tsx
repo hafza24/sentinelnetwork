@@ -17,6 +17,7 @@ import {
   ShieldAlert,
   Radio,
   Terminal,
+  UserCircle,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
+  { to: "/my-status", label: "My Status", icon: UserCircle },
   { to: "/activity", label: "Activity", icon: Radio },
   { to: "/devices", label: "Devices", icon: Monitor },
   { to: "/device-control", label: "Remote Control", icon: Terminal, adminOnly: true },

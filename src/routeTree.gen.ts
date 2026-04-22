@@ -18,6 +18,7 @@ import { Route as AuthedSchedulesRouteImport } from './routes/_authed.schedules'
 import { Route as AuthedRiskRouteImport } from './routes/_authed.risk'
 import { Route as AuthedRequestsRouteImport } from './routes/_authed.requests'
 import { Route as AuthedProcessesRouteImport } from './routes/_authed.processes'
+import { Route as AuthedMyStatusRouteImport } from './routes/_authed.my-status'
 import { Route as AuthedDownloadsRouteImport } from './routes/_authed.downloads'
 import { Route as AuthedDomainsRouteImport } from './routes/_authed.domains'
 import { Route as AuthedDevicesRouteImport } from './routes/_authed.devices'
@@ -69,6 +70,11 @@ const AuthedRequestsRoute = AuthedRequestsRouteImport.update({
 const AuthedProcessesRoute = AuthedProcessesRouteImport.update({
   id: '/processes',
   path: '/processes',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedMyStatusRoute = AuthedMyStatusRouteImport.update({
+  id: '/my-status',
+  path: '/my-status',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedDownloadsRoute = AuthedDownloadsRouteImport.update({
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
+  '/my-status': typeof AuthedMyStatusRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
   '/risk': typeof AuthedRiskRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
+  '/my-status': typeof AuthedMyStatusRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
   '/risk': typeof AuthedRiskRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/_authed/devices': typeof AuthedDevicesRoute
   '/_authed/domains': typeof AuthedDomainsRoute
   '/_authed/downloads': typeof AuthedDownloadsRoute
+  '/_authed/my-status': typeof AuthedMyStatusRoute
   '/_authed/processes': typeof AuthedProcessesRoute
   '/_authed/requests': typeof AuthedRequestsRoute
   '/_authed/risk': typeof AuthedRiskRoute
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
     | '/devices'
     | '/domains'
     | '/downloads'
+    | '/my-status'
     | '/processes'
     | '/requests'
     | '/risk'
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/devices'
     | '/domains'
     | '/downloads'
+    | '/my-status'
     | '/processes'
     | '/requests'
     | '/risk'
@@ -219,6 +230,7 @@ export interface FileRouteTypes {
     | '/_authed/devices'
     | '/_authed/domains'
     | '/_authed/downloads'
+    | '/_authed/my-status'
     | '/_authed/processes'
     | '/_authed/requests'
     | '/_authed/risk'
@@ -298,6 +310,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedProcessesRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/my-status': {
+      id: '/_authed/my-status'
+      path: '/my-status'
+      fullPath: '/my-status'
+      preLoaderRoute: typeof AuthedMyStatusRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/downloads': {
       id: '/_authed/downloads'
       path: '/downloads'
@@ -366,6 +385,7 @@ interface AuthedRouteChildren {
   AuthedDevicesRoute: typeof AuthedDevicesRoute
   AuthedDomainsRoute: typeof AuthedDomainsRoute
   AuthedDownloadsRoute: typeof AuthedDownloadsRoute
+  AuthedMyStatusRoute: typeof AuthedMyStatusRoute
   AuthedProcessesRoute: typeof AuthedProcessesRoute
   AuthedRequestsRoute: typeof AuthedRequestsRoute
   AuthedRiskRoute: typeof AuthedRiskRoute
@@ -382,6 +402,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedDevicesRoute: AuthedDevicesRoute,
   AuthedDomainsRoute: AuthedDomainsRoute,
   AuthedDownloadsRoute: AuthedDownloadsRoute,
+  AuthedMyStatusRoute: AuthedMyStatusRoute,
   AuthedProcessesRoute: AuthedProcessesRoute,
   AuthedRequestsRoute: AuthedRequestsRoute,
   AuthedRiskRoute: AuthedRiskRoute,
