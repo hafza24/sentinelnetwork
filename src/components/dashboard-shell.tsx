@@ -14,6 +14,9 @@ import {
   Clock,
   Zap,
   Settings as SettingsIcon,
+  ShieldAlert,
+  Radio,
+  Terminal,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -28,7 +31,10 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
+  { to: "/activity", label: "Activity", icon: Radio },
   { to: "/devices", label: "Devices", icon: Monitor },
+  { to: "/device-control", label: "Remote Control", icon: Terminal, adminOnly: true },
+  { to: "/risk", label: "Risk Scores", icon: ShieldAlert, adminOnly: true },
   { to: "/domains", label: "Domains", icon: Globe },
   { to: "/downloads", label: "Downloads", icon: Download },
   { to: "/processes", label: "Processes", icon: Cpu },
@@ -65,8 +71,8 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           </div>
         </div>
 
-        <nav className="flex-1 space-y-1 p-3">
-          {NAV.map((item) => {
+        <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+          {NAV.filter((item) => !item.adminOnly || isAdmin).map((item) => {
             const active =
               location.pathname === item.to ||
               (item.to !== "/dashboard" && location.pathname.startsWith(item.to));

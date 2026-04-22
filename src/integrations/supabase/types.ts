@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_events: {
+        Row: {
+          device_id: string | null
+          event_type: Database["public"]["Enums"]["activity_event_type"]
+          id: string
+          metadata: Json | null
+          occurred_at: string
+          outcome: Database["public"]["Enums"]["activity_event_outcome"]
+          screenshot_path: string | null
+          severity: Database["public"]["Enums"]["alert_severity"]
+          target: string | null
+          user_id: string | null
+        }
+        Insert: {
+          device_id?: string | null
+          event_type: Database["public"]["Enums"]["activity_event_type"]
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string
+          outcome: Database["public"]["Enums"]["activity_event_outcome"]
+          screenshot_path?: string | null
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          target?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          device_id?: string | null
+          event_type?: Database["public"]["Enums"]["activity_event_type"]
+          id?: string
+          metadata?: Json | null
+          occurred_at?: string
+          outcome?: Database["public"]["Enums"]["activity_event_outcome"]
+          screenshot_path?: string | null
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          target?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_events_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       alerts: {
         Row: {
           action_type: string
@@ -132,6 +179,56 @@ export type Database = {
           violation_threshold?: number
         }
         Relationships: []
+      }
+      device_commands: {
+        Row: {
+          acknowledged_at: string | null
+          command_type: Database["public"]["Enums"]["device_command_type"]
+          completed_at: string | null
+          created_at: string
+          device_id: string
+          id: string
+          issued_by: string | null
+          payload: Json
+          result: string | null
+          status: Database["public"]["Enums"]["device_command_status"]
+          updated_at: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          command_type: Database["public"]["Enums"]["device_command_type"]
+          completed_at?: string | null
+          created_at?: string
+          device_id: string
+          id?: string
+          issued_by?: string | null
+          payload?: Json
+          result?: string | null
+          status?: Database["public"]["Enums"]["device_command_status"]
+          updated_at?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          command_type?: Database["public"]["Enums"]["device_command_type"]
+          completed_at?: string | null
+          created_at?: string
+          device_id?: string
+          id?: string
+          issued_by?: string | null
+          payload?: Json
+          result?: string | null
+          status?: Database["public"]["Enums"]["device_command_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_commands_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       devices: {
         Row: {
@@ -505,6 +602,8 @@ export type Database = {
       }
     }
     Enums: {
+      activity_event_outcome: "allowed" | "blocked" | "killed" | "deleted"
+      activity_event_type: "domain_access" | "download" | "process"
       alert_severity: "info" | "warning" | "critical"
       app_role: "admin" | "user"
       auto_response_action:
@@ -513,6 +612,13 @@ export type Database = {
         | "disable_network"
         | "lock_device"
       auto_response_trigger: "violation_count" | "single_violation"
+      device_command_status: "pending" | "acknowledged" | "completed" | "failed"
+      device_command_type:
+        | "lock_device"
+        | "restart_agent"
+        | "force_sync"
+        | "disable_network"
+        | "enable_network"
       device_status: "active" | "inactive" | "disabled"
       request_status: "pending" | "approved" | "rejected"
       request_type: "domain" | "download" | "uninstall"
@@ -646,6 +752,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      activity_event_outcome: ["allowed", "blocked", "killed", "deleted"],
+      activity_event_type: ["domain_access", "download", "process"],
       alert_severity: ["info", "warning", "critical"],
       app_role: ["admin", "user"],
       auto_response_action: [
@@ -655,6 +763,14 @@ export const Constants = {
         "lock_device",
       ],
       auto_response_trigger: ["violation_count", "single_violation"],
+      device_command_status: ["pending", "acknowledged", "completed", "failed"],
+      device_command_type: [
+        "lock_device",
+        "restart_agent",
+        "force_sync",
+        "disable_network",
+        "enable_network",
+      ],
       device_status: ["active", "inactive", "disabled"],
       request_status: ["pending", "approved", "rejected"],
       request_type: ["domain", "download", "uninstall"],
