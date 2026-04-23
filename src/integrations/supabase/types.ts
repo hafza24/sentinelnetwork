@@ -61,6 +61,56 @@ export type Database = {
           },
         ]
       }
+      agent_heartbeats: {
+        Row: {
+          agent_version: string | null
+          cpu_percent: number | null
+          device_id: string
+          id: string
+          last_sync_at: string | null
+          memory_mb: number | null
+          metadata: Json
+          reported_at: string
+          uptime_seconds: number
+          user_id: string
+          watchdog_status: Database["public"]["Enums"]["watchdog_status"]
+        }
+        Insert: {
+          agent_version?: string | null
+          cpu_percent?: number | null
+          device_id: string
+          id?: string
+          last_sync_at?: string | null
+          memory_mb?: number | null
+          metadata?: Json
+          reported_at?: string
+          uptime_seconds?: number
+          user_id: string
+          watchdog_status?: Database["public"]["Enums"]["watchdog_status"]
+        }
+        Update: {
+          agent_version?: string | null
+          cpu_percent?: number | null
+          device_id?: string
+          id?: string
+          last_sync_at?: string | null
+          memory_mb?: number | null
+          metadata?: Json
+          reported_at?: string
+          uptime_seconds?: number
+          user_id?: string
+          watchdog_status?: Database["public"]["Enums"]["watchdog_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_heartbeats_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       alerts: {
         Row: {
           action_type: string
@@ -177,6 +227,45 @@ export type Database = {
           trigger_type?: Database["public"]["Enums"]["auto_response_trigger"]
           updated_at?: string
           violation_threshold?: number
+        }
+        Relationships: []
+      }
+      db_snapshots: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          label: string
+          notes: string | null
+          restored_at: string | null
+          size_bytes: number | null
+          status: Database["public"]["Enums"]["snapshot_status"]
+          storage_path: string | null
+          table_counts: Json
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          label: string
+          notes?: string | null
+          restored_at?: string | null
+          size_bytes?: number | null
+          status?: Database["public"]["Enums"]["snapshot_status"]
+          storage_path?: string | null
+          table_counts?: Json
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          label?: string
+          notes?: string | null
+          restored_at?: string | null
+          size_bytes?: number | null
+          status?: Database["public"]["Enums"]["snapshot_status"]
+          storage_path?: string | null
+          table_counts?: Json
         }
         Relationships: []
       }
@@ -529,6 +618,63 @@ export type Database = {
           },
         ]
       }
+      screenshot_deletions: {
+        Row: {
+          activity_event_id: string | null
+          deleted_at: string
+          deleted_by: string | null
+          device_id: string | null
+          id: string
+          reason: string
+          screenshot_path: string
+        }
+        Insert: {
+          activity_event_id?: string | null
+          deleted_at?: string
+          deleted_by?: string | null
+          device_id?: string | null
+          id?: string
+          reason?: string
+          screenshot_path: string
+        }
+        Update: {
+          activity_event_id?: string | null
+          deleted_at?: string
+          deleted_by?: string | null
+          device_id?: string | null
+          id?: string
+          reason?: string
+          screenshot_path?: string
+        }
+        Relationships: []
+      }
+      screenshot_retention_policies: {
+        Row: {
+          auto_purge_enabled: boolean
+          id: string
+          retention_days: number
+          singleton: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          auto_purge_enabled?: boolean
+          id?: string
+          retention_days?: number
+          singleton?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          auto_purge_enabled?: boolean
+          id?: string
+          retention_days?: number
+          singleton?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -588,6 +734,93 @@ export type Database = {
           },
         ]
       }
+      webhook_deliveries: {
+        Row: {
+          alert_id: string | null
+          attempts: number
+          created_at: string
+          endpoint_id: string
+          id: string
+          last_error: string | null
+          payload: Json
+          sent_at: string | null
+          status: Database["public"]["Enums"]["webhook_delivery_status"]
+        }
+        Insert: {
+          alert_id?: string | null
+          attempts?: number
+          created_at?: string
+          endpoint_id: string
+          id?: string
+          last_error?: string | null
+          payload?: Json
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["webhook_delivery_status"]
+        }
+        Update: {
+          alert_id?: string | null
+          attempts?: number
+          created_at?: string
+          endpoint_id?: string
+          id?: string
+          last_error?: string | null
+          payload?: Json
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["webhook_delivery_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_deliveries_alert_id_fkey"
+            columns: ["alert_id"]
+            isOneToOne: false
+            referencedRelation: "alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "webhook_deliveries_endpoint_id_fkey"
+            columns: ["endpoint_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_endpoints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_endpoints: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          min_severity: Database["public"]["Enums"]["alert_severity"]
+          name: string
+          provider: Database["public"]["Enums"]["webhook_provider"]
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          min_severity?: Database["public"]["Enums"]["alert_severity"]
+          name: string
+          provider?: Database["public"]["Enums"]["webhook_provider"]
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          min_severity?: Database["public"]["Enums"]["alert_severity"]
+          name?: string
+          provider?: Database["public"]["Enums"]["webhook_provider"]
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -600,6 +833,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      purge_expired_screenshots: { Args: never; Returns: number }
     }
     Enums: {
       activity_event_outcome: "allowed" | "blocked" | "killed" | "deleted"
@@ -624,7 +858,11 @@ export type Database = {
       request_type: "domain" | "download" | "uninstall"
       rule_scope: "global" | "device"
       schedule_target_type: "domain" | "process"
+      snapshot_status: "pending" | "ready" | "failed" | "restored"
       violation_source: "domain" | "download" | "process"
+      watchdog_status: "healthy" | "degraded" | "down" | "unknown"
+      webhook_delivery_status: "pending" | "sent" | "failed"
+      webhook_provider: "slack" | "discord" | "generic"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -776,7 +1014,11 @@ export const Constants = {
       request_type: ["domain", "download", "uninstall"],
       rule_scope: ["global", "device"],
       schedule_target_type: ["domain", "process"],
+      snapshot_status: ["pending", "ready", "failed", "restored"],
       violation_source: ["domain", "download", "process"],
+      watchdog_status: ["healthy", "degraded", "down", "unknown"],
+      webhook_delivery_status: ["pending", "sent", "failed"],
+      webhook_provider: ["slack", "discord", "generic"],
     },
   },
 } as const
