@@ -18,6 +18,10 @@ import {
   Radio,
   Terminal,
   UserCircle,
+  Webhook,
+  HeartPulse,
+  Database as DatabaseIcon,
+  Camera,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -44,6 +48,10 @@ const NAV: NavItem[] = [
   { to: "/auto-response", label: "Auto-Response", icon: Zap },
   { to: "/alerts", label: "Alerts", icon: AlertTriangle },
   { to: "/requests", label: "Requests", icon: Inbox },
+  { to: "/telemetry", label: "Telemetry", icon: HeartPulse },
+  { to: "/webhooks", label: "Webhooks", icon: Webhook, adminOnly: true },
+  { to: "/retention", label: "Retention", icon: Camera, adminOnly: true },
+  { to: "/backups", label: "Backups", icon: DatabaseIcon, adminOnly: true },
   { to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
