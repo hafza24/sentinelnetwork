@@ -22,7 +22,9 @@ export type Database = {
           metadata: Json | null
           occurred_at: string
           outcome: Database["public"]["Enums"]["activity_event_outcome"]
+          screenshot_bucket: string | null
           screenshot_path: string | null
+          screenshot_storage_path: string | null
           severity: Database["public"]["Enums"]["alert_severity"]
           target: string | null
           user_id: string | null
@@ -34,7 +36,9 @@ export type Database = {
           metadata?: Json | null
           occurred_at?: string
           outcome: Database["public"]["Enums"]["activity_event_outcome"]
+          screenshot_bucket?: string | null
           screenshot_path?: string | null
+          screenshot_storage_path?: string | null
           severity?: Database["public"]["Enums"]["alert_severity"]
           target?: string | null
           user_id?: string | null
@@ -46,7 +50,9 @@ export type Database = {
           metadata?: Json | null
           occurred_at?: string
           outcome?: Database["public"]["Enums"]["activity_event_outcome"]
+          screenshot_bucket?: string | null
           screenshot_path?: string | null
+          screenshot_storage_path?: string | null
           severity?: Database["public"]["Enums"]["alert_severity"]
           target?: string | null
           user_id?: string | null
@@ -319,6 +325,50 @@ export type Database = {
           },
         ]
       }
+      device_tasks: {
+        Row: {
+          cpu_percent: number | null
+          device_id: string
+          id: string
+          memory_mb: number | null
+          pid: number
+          process_name: string
+          reported_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          cpu_percent?: number | null
+          device_id: string
+          id?: string
+          memory_mb?: number | null
+          pid: number
+          process_name: string
+          reported_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          cpu_percent?: number | null
+          device_id?: string
+          id?: string
+          memory_mb?: number | null
+          pid?: number
+          process_name?: string
+          reported_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_tasks_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       devices: {
         Row: {
           agent_version: string | null
@@ -445,6 +495,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "downloads_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      file_integrity: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          expected_sha256: string
+          file_path: string
+          id: string
+          is_valid: boolean
+          last_verified_at: string | null
+          repair_count: number
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          expected_sha256: string
+          file_path: string
+          id?: string
+          is_valid?: boolean
+          last_verified_at?: string | null
+          repair_count?: number
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          expected_sha256?: string
+          file_path?: string
+          id?: string
+          is_valid?: boolean
+          last_verified_at?: string | null
+          repair_count?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "file_integrity_device_id_fkey"
             columns: ["device_id"]
             isOneToOne: false
             referencedRelation: "devices"
@@ -611,6 +705,59 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "requests_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      screen_sessions: {
+        Row: {
+          bytes_transferred: number
+          created_at: string
+          device_id: string
+          error_message: string | null
+          frame_count: number
+          id: string
+          started_at: string | null
+          status: string
+          stopped_at: string | null
+          updated_at: string
+          user_id: string
+          ws_endpoint: string | null
+        }
+        Insert: {
+          bytes_transferred?: number
+          created_at?: string
+          device_id: string
+          error_message?: string | null
+          frame_count?: number
+          id?: string
+          started_at?: string | null
+          status?: string
+          stopped_at?: string | null
+          updated_at?: string
+          user_id: string
+          ws_endpoint?: string | null
+        }
+        Update: {
+          bytes_transferred?: number
+          created_at?: string
+          device_id?: string
+          error_message?: string | null
+          frame_count?: number
+          id?: string
+          started_at?: string | null
+          status?: string
+          stopped_at?: string | null
+          updated_at?: string
+          user_id?: string
+          ws_endpoint?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screen_sessions_device_id_fkey"
             columns: ["device_id"]
             isOneToOne: false
             referencedRelation: "devices"
