@@ -127,6 +127,42 @@ export type Database = {
           },
         ]
       }
+      ai_insights: {
+        Row: {
+          category: string
+          created_at: string
+          device_id: string | null
+          id: string
+          metadata: Json
+          severity: Database["public"]["Enums"]["alert_severity"]
+          summary: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          summary: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          summary?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       alerts: {
         Row: {
           action_type: string
@@ -198,6 +234,36 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
       auto_response_rules: {
         Row: {
           action: Database["public"]["Enums"]["auto_response_action"]
@@ -246,6 +312,36 @@ export type Database = {
         }
         Relationships: []
       }
+      browser_history: {
+        Row: {
+          browser: string | null
+          device_id: string | null
+          id: string
+          title: string | null
+          url: string
+          user_id: string
+          visited_at: string
+        }
+        Insert: {
+          browser?: string | null
+          device_id?: string | null
+          id?: string
+          title?: string | null
+          url: string
+          user_id: string
+          visited_at?: string
+        }
+        Update: {
+          browser?: string | null
+          device_id?: string | null
+          id?: string
+          title?: string | null
+          url?: string
+          user_id?: string
+          visited_at?: string
+        }
+        Relationships: []
+      }
       db_snapshots: {
         Row: {
           created_at: string
@@ -284,6 +380,35 @@ export type Database = {
           table_counts?: Json
         }
         Relationships: []
+      }
+      departments: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          organization_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          organization_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          organization_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       device_commands: {
         Row: {
@@ -512,6 +637,39 @@ export type Database = {
           },
         ]
       }
+      file_events: {
+        Row: {
+          action: string
+          destination: string | null
+          device_id: string | null
+          file_path: string
+          id: string
+          occurred_at: string
+          size_bytes: number | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          destination?: string | null
+          device_id?: string | null
+          file_path: string
+          id?: string
+          occurred_at?: string
+          size_bytes?: number | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          destination?: string | null
+          device_id?: string | null
+          file_path?: string
+          id?: string
+          occurred_at?: string
+          size_bytes?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       file_integrity: {
         Row: {
           created_at: string
@@ -555,6 +713,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      peripheral_events: {
+        Row: {
+          app_name: string | null
+          device_id: string | null
+          id: string
+          occurred_at: string
+          peripheral: string
+          state: string
+          user_id: string
+        }
+        Insert: {
+          app_name?: string | null
+          device_id?: string | null
+          id?: string
+          occurred_at?: string
+          peripheral: string
+          state: string
+          user_id: string
+        }
+        Update: {
+          app_name?: string | null
+          device_id?: string | null
+          id?: string
+          occurred_at?: string
+          peripheral?: string
+          state?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       policy_schedules: {
         Row: {
@@ -901,6 +1113,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      usb_events: {
+        Row: {
+          device_id: string | null
+          event_type: string
+          id: string
+          occurred_at: string
+          product: string | null
+          serial: string | null
+          user_id: string
+          vendor: string | null
+        }
+        Insert: {
+          device_id?: string | null
+          event_type: string
+          id?: string
+          occurred_at?: string
+          product?: string | null
+          serial?: string | null
+          user_id: string
+          vendor?: string | null
+        }
+        Update: {
+          device_id?: string | null
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          product?: string | null
+          serial?: string | null
+          user_id?: string
+          vendor?: string | null
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
