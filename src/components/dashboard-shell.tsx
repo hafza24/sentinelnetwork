@@ -22,6 +22,13 @@ import {
   HeartPulse,
   Database as DatabaseIcon,
   Camera,
+  Usb,
+  FileText,
+  Globe2,
+  ScrollText,
+  Sparkles,
+  Building2,
+  MonitorPlay,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -40,7 +47,13 @@ const NAV: NavItem[] = [
   { to: "/activity", label: "Activity", icon: Radio },
   { to: "/devices", label: "Devices", icon: Monitor },
   { to: "/device-control", label: "Remote Control", icon: Terminal, adminOnly: true },
+  { to: "/live-stream", label: "Live Stream", icon: MonitorPlay, adminOnly: true },
   { to: "/risk", label: "Risk Scores", icon: ShieldAlert, adminOnly: true },
+  { to: "/insights", label: "AI Insights", icon: Sparkles, adminOnly: true },
+  { to: "/peripherals", label: "Camera & Mic", icon: Camera },
+  { to: "/usb", label: "USB Activity", icon: Usb },
+  { to: "/files", label: "File Activity", icon: FileText },
+  { to: "/browsing", label: "Browsing", icon: Globe2 },
   { to: "/domains", label: "Domains", icon: Globe },
   { to: "/downloads", label: "Downloads", icon: Download },
   { to: "/processes", label: "Processes", icon: Cpu },
@@ -52,6 +65,8 @@ const NAV: NavItem[] = [
   { to: "/webhooks", label: "Webhooks", icon: Webhook, adminOnly: true },
   { to: "/retention", label: "Retention", icon: Camera, adminOnly: true },
   { to: "/backups", label: "Backups", icon: DatabaseIcon, adminOnly: true },
+  { to: "/audit", label: "Audit Log", icon: ScrollText, adminOnly: true },
+  { to: "/organizations", label: "Organizations", icon: Building2, adminOnly: true },
   { to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 

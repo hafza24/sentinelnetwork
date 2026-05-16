@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedWebhooksRouteImport } from './routes/_authed.webhooks'
+import { Route as AuthedUsbRouteImport } from './routes/_authed.usb'
 import { Route as AuthedTelemetryRouteImport } from './routes/_authed.telemetry'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed.settings'
 import { Route as AuthedSchedulesRouteImport } from './routes/_authed.schedules'
@@ -21,14 +22,21 @@ import { Route as AuthedRiskRouteImport } from './routes/_authed.risk'
 import { Route as AuthedRetentionRouteImport } from './routes/_authed.retention'
 import { Route as AuthedRequestsRouteImport } from './routes/_authed.requests'
 import { Route as AuthedProcessesRouteImport } from './routes/_authed.processes'
+import { Route as AuthedPeripheralsRouteImport } from './routes/_authed.peripherals'
+import { Route as AuthedOrganizationsRouteImport } from './routes/_authed.organizations'
 import { Route as AuthedMyStatusRouteImport } from './routes/_authed.my-status'
+import { Route as AuthedLiveStreamRouteImport } from './routes/_authed.live-stream'
+import { Route as AuthedInsightsRouteImport } from './routes/_authed.insights'
+import { Route as AuthedFilesRouteImport } from './routes/_authed.files'
 import { Route as AuthedDownloadsRouteImport } from './routes/_authed.downloads'
 import { Route as AuthedDomainsRouteImport } from './routes/_authed.domains'
 import { Route as AuthedDevicesRouteImport } from './routes/_authed.devices'
 import { Route as AuthedDeviceControlRouteImport } from './routes/_authed.device-control'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed.dashboard'
+import { Route as AuthedBrowsingRouteImport } from './routes/_authed.browsing'
 import { Route as AuthedBackupsRouteImport } from './routes/_authed.backups'
 import { Route as AuthedAutoResponseRouteImport } from './routes/_authed.auto-response'
+import { Route as AuthedAuditRouteImport } from './routes/_authed.audit'
 import { Route as AuthedAlertsRouteImport } from './routes/_authed.alerts'
 import { Route as AuthedActivityRouteImport } from './routes/_authed.activity'
 import { Route as ApiPublicPurgeScreenshotsRouteImport } from './routes/api/public/purge-screenshots'
@@ -57,6 +65,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthedWebhooksRoute = AuthedWebhooksRouteImport.update({
   id: '/webhooks',
   path: '/webhooks',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedUsbRoute = AuthedUsbRouteImport.update({
+  id: '/usb',
+  path: '/usb',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedTelemetryRoute = AuthedTelemetryRouteImport.update({
@@ -94,9 +107,34 @@ const AuthedProcessesRoute = AuthedProcessesRouteImport.update({
   path: '/processes',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedPeripheralsRoute = AuthedPeripheralsRouteImport.update({
+  id: '/peripherals',
+  path: '/peripherals',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedOrganizationsRoute = AuthedOrganizationsRouteImport.update({
+  id: '/organizations',
+  path: '/organizations',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedMyStatusRoute = AuthedMyStatusRouteImport.update({
   id: '/my-status',
   path: '/my-status',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedLiveStreamRoute = AuthedLiveStreamRouteImport.update({
+  id: '/live-stream',
+  path: '/live-stream',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedInsightsRoute = AuthedInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedFilesRoute = AuthedFilesRouteImport.update({
+  id: '/files',
+  path: '/files',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedDownloadsRoute = AuthedDownloadsRouteImport.update({
@@ -124,6 +162,11 @@ const AuthedDashboardRoute = AuthedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedBrowsingRoute = AuthedBrowsingRouteImport.update({
+  id: '/browsing',
+  path: '/browsing',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedBackupsRoute = AuthedBackupsRouteImport.update({
   id: '/backups',
   path: '/backups',
@@ -132,6 +175,11 @@ const AuthedBackupsRoute = AuthedBackupsRouteImport.update({
 const AuthedAutoResponseRoute = AuthedAutoResponseRouteImport.update({
   id: '/auto-response',
   path: '/auto-response',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedAuditRoute = AuthedAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedAlertsRoute = AuthedAlertsRouteImport.update({
@@ -168,14 +216,21 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/activity': typeof AuthedActivityRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/audit': typeof AuthedAuditRoute
   '/auto-response': typeof AuthedAutoResponseRoute
   '/backups': typeof AuthedBackupsRoute
+  '/browsing': typeof AuthedBrowsingRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/device-control': typeof AuthedDeviceControlRoute
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
+  '/files': typeof AuthedFilesRoute
+  '/insights': typeof AuthedInsightsRoute
+  '/live-stream': typeof AuthedLiveStreamRoute
   '/my-status': typeof AuthedMyStatusRoute
+  '/organizations': typeof AuthedOrganizationsRoute
+  '/peripherals': typeof AuthedPeripheralsRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
   '/retention': typeof AuthedRetentionRoute
@@ -183,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/schedules': typeof AuthedSchedulesRoute
   '/settings': typeof AuthedSettingsRoute
   '/telemetry': typeof AuthedTelemetryRoute
+  '/usb': typeof AuthedUsbRoute
   '/webhooks': typeof AuthedWebhooksRoute
   '/api/public/create-snapshot': typeof ApiPublicCreateSnapshotRoute
   '/api/public/dispatch-webhooks': typeof ApiPublicDispatchWebhooksRoute
@@ -194,14 +250,21 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/activity': typeof AuthedActivityRoute
   '/alerts': typeof AuthedAlertsRoute
+  '/audit': typeof AuthedAuditRoute
   '/auto-response': typeof AuthedAutoResponseRoute
   '/backups': typeof AuthedBackupsRoute
+  '/browsing': typeof AuthedBrowsingRoute
   '/dashboard': typeof AuthedDashboardRoute
   '/device-control': typeof AuthedDeviceControlRoute
   '/devices': typeof AuthedDevicesRoute
   '/domains': typeof AuthedDomainsRoute
   '/downloads': typeof AuthedDownloadsRoute
+  '/files': typeof AuthedFilesRoute
+  '/insights': typeof AuthedInsightsRoute
+  '/live-stream': typeof AuthedLiveStreamRoute
   '/my-status': typeof AuthedMyStatusRoute
+  '/organizations': typeof AuthedOrganizationsRoute
+  '/peripherals': typeof AuthedPeripheralsRoute
   '/processes': typeof AuthedProcessesRoute
   '/requests': typeof AuthedRequestsRoute
   '/retention': typeof AuthedRetentionRoute
@@ -209,6 +272,7 @@ export interface FileRoutesByTo {
   '/schedules': typeof AuthedSchedulesRoute
   '/settings': typeof AuthedSettingsRoute
   '/telemetry': typeof AuthedTelemetryRoute
+  '/usb': typeof AuthedUsbRoute
   '/webhooks': typeof AuthedWebhooksRoute
   '/api/public/create-snapshot': typeof ApiPublicCreateSnapshotRoute
   '/api/public/dispatch-webhooks': typeof ApiPublicDispatchWebhooksRoute
@@ -222,14 +286,21 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authed/activity': typeof AuthedActivityRoute
   '/_authed/alerts': typeof AuthedAlertsRoute
+  '/_authed/audit': typeof AuthedAuditRoute
   '/_authed/auto-response': typeof AuthedAutoResponseRoute
   '/_authed/backups': typeof AuthedBackupsRoute
+  '/_authed/browsing': typeof AuthedBrowsingRoute
   '/_authed/dashboard': typeof AuthedDashboardRoute
   '/_authed/device-control': typeof AuthedDeviceControlRoute
   '/_authed/devices': typeof AuthedDevicesRoute
   '/_authed/domains': typeof AuthedDomainsRoute
   '/_authed/downloads': typeof AuthedDownloadsRoute
+  '/_authed/files': typeof AuthedFilesRoute
+  '/_authed/insights': typeof AuthedInsightsRoute
+  '/_authed/live-stream': typeof AuthedLiveStreamRoute
   '/_authed/my-status': typeof AuthedMyStatusRoute
+  '/_authed/organizations': typeof AuthedOrganizationsRoute
+  '/_authed/peripherals': typeof AuthedPeripheralsRoute
   '/_authed/processes': typeof AuthedProcessesRoute
   '/_authed/requests': typeof AuthedRequestsRoute
   '/_authed/retention': typeof AuthedRetentionRoute
@@ -237,6 +308,7 @@ export interface FileRoutesById {
   '/_authed/schedules': typeof AuthedSchedulesRoute
   '/_authed/settings': typeof AuthedSettingsRoute
   '/_authed/telemetry': typeof AuthedTelemetryRoute
+  '/_authed/usb': typeof AuthedUsbRoute
   '/_authed/webhooks': typeof AuthedWebhooksRoute
   '/api/public/create-snapshot': typeof ApiPublicCreateSnapshotRoute
   '/api/public/dispatch-webhooks': typeof ApiPublicDispatchWebhooksRoute
@@ -250,14 +322,21 @@ export interface FileRouteTypes {
     | '/signup'
     | '/activity'
     | '/alerts'
+    | '/audit'
     | '/auto-response'
     | '/backups'
+    | '/browsing'
     | '/dashboard'
     | '/device-control'
     | '/devices'
     | '/domains'
     | '/downloads'
+    | '/files'
+    | '/insights'
+    | '/live-stream'
     | '/my-status'
+    | '/organizations'
+    | '/peripherals'
     | '/processes'
     | '/requests'
     | '/retention'
@@ -265,6 +344,7 @@ export interface FileRouteTypes {
     | '/schedules'
     | '/settings'
     | '/telemetry'
+    | '/usb'
     | '/webhooks'
     | '/api/public/create-snapshot'
     | '/api/public/dispatch-webhooks'
@@ -276,14 +356,21 @@ export interface FileRouteTypes {
     | '/signup'
     | '/activity'
     | '/alerts'
+    | '/audit'
     | '/auto-response'
     | '/backups'
+    | '/browsing'
     | '/dashboard'
     | '/device-control'
     | '/devices'
     | '/domains'
     | '/downloads'
+    | '/files'
+    | '/insights'
+    | '/live-stream'
     | '/my-status'
+    | '/organizations'
+    | '/peripherals'
     | '/processes'
     | '/requests'
     | '/retention'
@@ -291,6 +378,7 @@ export interface FileRouteTypes {
     | '/schedules'
     | '/settings'
     | '/telemetry'
+    | '/usb'
     | '/webhooks'
     | '/api/public/create-snapshot'
     | '/api/public/dispatch-webhooks'
@@ -303,14 +391,21 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authed/activity'
     | '/_authed/alerts'
+    | '/_authed/audit'
     | '/_authed/auto-response'
     | '/_authed/backups'
+    | '/_authed/browsing'
     | '/_authed/dashboard'
     | '/_authed/device-control'
     | '/_authed/devices'
     | '/_authed/domains'
     | '/_authed/downloads'
+    | '/_authed/files'
+    | '/_authed/insights'
+    | '/_authed/live-stream'
     | '/_authed/my-status'
+    | '/_authed/organizations'
+    | '/_authed/peripherals'
     | '/_authed/processes'
     | '/_authed/requests'
     | '/_authed/retention'
@@ -318,6 +413,7 @@ export interface FileRouteTypes {
     | '/_authed/schedules'
     | '/_authed/settings'
     | '/_authed/telemetry'
+    | '/_authed/usb'
     | '/_authed/webhooks'
     | '/api/public/create-snapshot'
     | '/api/public/dispatch-webhooks'
@@ -371,6 +467,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedWebhooksRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/usb': {
+      id: '/_authed/usb'
+      path: '/usb'
+      fullPath: '/usb'
+      preLoaderRoute: typeof AuthedUsbRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/telemetry': {
       id: '/_authed/telemetry'
       path: '/telemetry'
@@ -420,11 +523,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedProcessesRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/peripherals': {
+      id: '/_authed/peripherals'
+      path: '/peripherals'
+      fullPath: '/peripherals'
+      preLoaderRoute: typeof AuthedPeripheralsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/organizations': {
+      id: '/_authed/organizations'
+      path: '/organizations'
+      fullPath: '/organizations'
+      preLoaderRoute: typeof AuthedOrganizationsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/my-status': {
       id: '/_authed/my-status'
       path: '/my-status'
       fullPath: '/my-status'
       preLoaderRoute: typeof AuthedMyStatusRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/live-stream': {
+      id: '/_authed/live-stream'
+      path: '/live-stream'
+      fullPath: '/live-stream'
+      preLoaderRoute: typeof AuthedLiveStreamRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/insights': {
+      id: '/_authed/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof AuthedInsightsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/files': {
+      id: '/_authed/files'
+      path: '/files'
+      fullPath: '/files'
+      preLoaderRoute: typeof AuthedFilesRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/downloads': {
@@ -462,6 +600,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedDashboardRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/browsing': {
+      id: '/_authed/browsing'
+      path: '/browsing'
+      fullPath: '/browsing'
+      preLoaderRoute: typeof AuthedBrowsingRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/backups': {
       id: '/_authed/backups'
       path: '/backups'
@@ -474,6 +619,13 @@ declare module '@tanstack/react-router' {
       path: '/auto-response'
       fullPath: '/auto-response'
       preLoaderRoute: typeof AuthedAutoResponseRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/audit': {
+      id: '/_authed/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuthedAuditRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/alerts': {
@@ -517,14 +669,21 @@ declare module '@tanstack/react-router' {
 interface AuthedRouteChildren {
   AuthedActivityRoute: typeof AuthedActivityRoute
   AuthedAlertsRoute: typeof AuthedAlertsRoute
+  AuthedAuditRoute: typeof AuthedAuditRoute
   AuthedAutoResponseRoute: typeof AuthedAutoResponseRoute
   AuthedBackupsRoute: typeof AuthedBackupsRoute
+  AuthedBrowsingRoute: typeof AuthedBrowsingRoute
   AuthedDashboardRoute: typeof AuthedDashboardRoute
   AuthedDeviceControlRoute: typeof AuthedDeviceControlRoute
   AuthedDevicesRoute: typeof AuthedDevicesRoute
   AuthedDomainsRoute: typeof AuthedDomainsRoute
   AuthedDownloadsRoute: typeof AuthedDownloadsRoute
+  AuthedFilesRoute: typeof AuthedFilesRoute
+  AuthedInsightsRoute: typeof AuthedInsightsRoute
+  AuthedLiveStreamRoute: typeof AuthedLiveStreamRoute
   AuthedMyStatusRoute: typeof AuthedMyStatusRoute
+  AuthedOrganizationsRoute: typeof AuthedOrganizationsRoute
+  AuthedPeripheralsRoute: typeof AuthedPeripheralsRoute
   AuthedProcessesRoute: typeof AuthedProcessesRoute
   AuthedRequestsRoute: typeof AuthedRequestsRoute
   AuthedRetentionRoute: typeof AuthedRetentionRoute
@@ -532,20 +691,28 @@ interface AuthedRouteChildren {
   AuthedSchedulesRoute: typeof AuthedSchedulesRoute
   AuthedSettingsRoute: typeof AuthedSettingsRoute
   AuthedTelemetryRoute: typeof AuthedTelemetryRoute
+  AuthedUsbRoute: typeof AuthedUsbRoute
   AuthedWebhooksRoute: typeof AuthedWebhooksRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedActivityRoute: AuthedActivityRoute,
   AuthedAlertsRoute: AuthedAlertsRoute,
+  AuthedAuditRoute: AuthedAuditRoute,
   AuthedAutoResponseRoute: AuthedAutoResponseRoute,
   AuthedBackupsRoute: AuthedBackupsRoute,
+  AuthedBrowsingRoute: AuthedBrowsingRoute,
   AuthedDashboardRoute: AuthedDashboardRoute,
   AuthedDeviceControlRoute: AuthedDeviceControlRoute,
   AuthedDevicesRoute: AuthedDevicesRoute,
   AuthedDomainsRoute: AuthedDomainsRoute,
   AuthedDownloadsRoute: AuthedDownloadsRoute,
+  AuthedFilesRoute: AuthedFilesRoute,
+  AuthedInsightsRoute: AuthedInsightsRoute,
+  AuthedLiveStreamRoute: AuthedLiveStreamRoute,
   AuthedMyStatusRoute: AuthedMyStatusRoute,
+  AuthedOrganizationsRoute: AuthedOrganizationsRoute,
+  AuthedPeripheralsRoute: AuthedPeripheralsRoute,
   AuthedProcessesRoute: AuthedProcessesRoute,
   AuthedRequestsRoute: AuthedRequestsRoute,
   AuthedRetentionRoute: AuthedRetentionRoute,
@@ -553,6 +720,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedSchedulesRoute: AuthedSchedulesRoute,
   AuthedSettingsRoute: AuthedSettingsRoute,
   AuthedTelemetryRoute: AuthedTelemetryRoute,
+  AuthedUsbRoute: AuthedUsbRoute,
   AuthedWebhooksRoute: AuthedWebhooksRoute,
 }
 
@@ -571,12 +739,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

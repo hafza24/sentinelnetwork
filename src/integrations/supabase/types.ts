@@ -23,6 +23,7 @@ export type Database = {
           occurred_at: string
           outcome: Database["public"]["Enums"]["activity_event_outcome"]
           screenshot_bucket: string | null
+          screenshot_id: string | null
           screenshot_path: string | null
           screenshot_storage_path: string | null
           severity: Database["public"]["Enums"]["alert_severity"]
@@ -37,6 +38,7 @@ export type Database = {
           occurred_at?: string
           outcome: Database["public"]["Enums"]["activity_event_outcome"]
           screenshot_bucket?: string | null
+          screenshot_id?: string | null
           screenshot_path?: string | null
           screenshot_storage_path?: string | null
           severity?: Database["public"]["Enums"]["alert_severity"]
@@ -51,6 +53,7 @@ export type Database = {
           occurred_at?: string
           outcome?: Database["public"]["Enums"]["activity_event_outcome"]
           screenshot_bucket?: string | null
+          screenshot_id?: string | null
           screenshot_path?: string | null
           screenshot_storage_path?: string | null
           severity?: Database["public"]["Enums"]["alert_severity"]
@@ -63,6 +66,13 @@ export type Database = {
             columns: ["device_id"]
             isOneToOne: false
             referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_events_screenshot_id_fkey"
+            columns: ["screenshot_id"]
+            isOneToOne: false
+            referencedRelation: "screenshots"
             referencedColumns: ["id"]
           },
         ]
@@ -116,6 +126,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      ai_insights: {
+        Row: {
+          category: string
+          created_at: string
+          device_id: string | null
+          id: string
+          metadata: Json
+          severity: Database["public"]["Enums"]["alert_severity"]
+          summary: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          summary: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          metadata?: Json
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          summary?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       alerts: {
         Row: {
@@ -188,6 +234,36 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
       auto_response_rules: {
         Row: {
           action: Database["public"]["Enums"]["auto_response_action"]
@@ -236,6 +312,36 @@ export type Database = {
         }
         Relationships: []
       }
+      browser_history: {
+        Row: {
+          browser: string | null
+          device_id: string | null
+          id: string
+          title: string | null
+          url: string
+          user_id: string
+          visited_at: string
+        }
+        Insert: {
+          browser?: string | null
+          device_id?: string | null
+          id?: string
+          title?: string | null
+          url: string
+          user_id: string
+          visited_at?: string
+        }
+        Update: {
+          browser?: string | null
+          device_id?: string | null
+          id?: string
+          title?: string | null
+          url?: string
+          user_id?: string
+          visited_at?: string
+        }
+        Relationships: []
+      }
       db_snapshots: {
         Row: {
           created_at: string
@@ -274,6 +380,35 @@ export type Database = {
           table_counts?: Json
         }
         Relationships: []
+      }
+      departments: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          organization_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          organization_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          organization_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       device_commands: {
         Row: {
@@ -502,6 +637,39 @@ export type Database = {
           },
         ]
       }
+      file_events: {
+        Row: {
+          action: string
+          destination: string | null
+          device_id: string | null
+          file_path: string
+          id: string
+          occurred_at: string
+          size_bytes: number | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          destination?: string | null
+          device_id?: string | null
+          file_path: string
+          id?: string
+          occurred_at?: string
+          size_bytes?: number | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          destination?: string | null
+          device_id?: string | null
+          file_path?: string
+          id?: string
+          occurred_at?: string
+          size_bytes?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       file_integrity: {
         Row: {
           created_at: string
@@ -545,6 +713,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      peripheral_events: {
+        Row: {
+          app_name: string | null
+          device_id: string | null
+          id: string
+          occurred_at: string
+          peripheral: string
+          state: string
+          user_id: string
+        }
+        Insert: {
+          app_name?: string | null
+          device_id?: string | null
+          id?: string
+          occurred_at?: string
+          peripheral: string
+          state: string
+          user_id: string
+        }
+        Update: {
+          app_name?: string | null
+          device_id?: string | null
+          id?: string
+          occurred_at?: string
+          peripheral?: string
+          state?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       policy_schedules: {
         Row: {
@@ -822,6 +1044,109 @@ export type Database = {
         }
         Relationships: []
       }
+      screenshots: {
+        Row: {
+          activity_event_id: string | null
+          bucket: string
+          capture_reason: string
+          captured_at: string
+          content_type: string
+          created_at: string
+          device_id: string
+          file_size_bytes: number | null
+          id: string
+          sha256: string | null
+          storage_path: string
+          user_id: string
+          violation_event_id: string | null
+        }
+        Insert: {
+          activity_event_id?: string | null
+          bucket?: string
+          capture_reason?: string
+          captured_at?: string
+          content_type?: string
+          created_at?: string
+          device_id: string
+          file_size_bytes?: number | null
+          id?: string
+          sha256?: string | null
+          storage_path: string
+          user_id: string
+          violation_event_id?: string | null
+        }
+        Update: {
+          activity_event_id?: string | null
+          bucket?: string
+          capture_reason?: string
+          captured_at?: string
+          content_type?: string
+          created_at?: string
+          device_id?: string
+          file_size_bytes?: number | null
+          id?: string
+          sha256?: string | null
+          storage_path?: string
+          user_id?: string
+          violation_event_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screenshots_activity_event_id_fkey"
+            columns: ["activity_event_id"]
+            isOneToOne: false
+            referencedRelation: "activity_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "screenshots_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "screenshots_violation_event_id_fkey"
+            columns: ["violation_event_id"]
+            isOneToOne: false
+            referencedRelation: "violation_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      usb_events: {
+        Row: {
+          device_id: string | null
+          event_type: string
+          id: string
+          occurred_at: string
+          product: string | null
+          serial: string | null
+          user_id: string
+          vendor: string | null
+        }
+        Insert: {
+          device_id?: string | null
+          event_type: string
+          id?: string
+          occurred_at?: string
+          product?: string | null
+          serial?: string | null
+          user_id: string
+          vendor?: string | null
+        }
+        Update: {
+          device_id?: string | null
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          product?: string | null
+          serial?: string | null
+          user_id?: string
+          vendor?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -973,6 +1298,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_device_online_status: {
+        Args: {
+          _last_seen: string
+          _stale_after?: string
+          _status: Database["public"]["Enums"]["device_status"]
+        }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -980,7 +1313,18 @@ export type Database = {
         }
         Returns: boolean
       }
+      mark_stale_devices_offline: {
+        Args: { _stale_after?: string }
+        Returns: number
+      }
       purge_expired_screenshots: { Args: never; Returns: number }
+      validate_device_command_payload: {
+        Args: {
+          _command_type: Database["public"]["Enums"]["device_command_type"]
+          _payload: Json
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       activity_event_outcome: "allowed" | "blocked" | "killed" | "deleted"
@@ -1000,6 +1344,10 @@ export type Database = {
         | "force_sync"
         | "disable_network"
         | "enable_network"
+        | "shutdown_device"
+        | "kill_process"
+        | "start_stream"
+        | "stop_stream"
       device_status: "active" | "inactive" | "disabled"
       request_status: "pending" | "approved" | "rejected"
       request_type: "domain" | "download" | "uninstall"
@@ -1155,6 +1503,10 @@ export const Constants = {
         "force_sync",
         "disable_network",
         "enable_network",
+        "shutdown_device",
+        "kill_process",
+        "start_stream",
+        "stop_stream",
       ],
       device_status: ["active", "inactive", "disabled"],
       request_status: ["pending", "approved", "rejected"],
