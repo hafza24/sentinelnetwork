@@ -23,6 +23,7 @@ export type Database = {
           occurred_at: string
           outcome: Database["public"]["Enums"]["activity_event_outcome"]
           screenshot_bucket: string | null
+          screenshot_id: string | null
           screenshot_path: string | null
           screenshot_storage_path: string | null
           severity: Database["public"]["Enums"]["alert_severity"]
@@ -37,6 +38,7 @@ export type Database = {
           occurred_at?: string
           outcome: Database["public"]["Enums"]["activity_event_outcome"]
           screenshot_bucket?: string | null
+          screenshot_id?: string | null
           screenshot_path?: string | null
           screenshot_storage_path?: string | null
           severity?: Database["public"]["Enums"]["alert_severity"]
@@ -51,6 +53,7 @@ export type Database = {
           occurred_at?: string
           outcome?: Database["public"]["Enums"]["activity_event_outcome"]
           screenshot_bucket?: string | null
+          screenshot_id?: string | null
           screenshot_path?: string | null
           screenshot_storage_path?: string | null
           severity?: Database["public"]["Enums"]["alert_severity"]
@@ -63,6 +66,13 @@ export type Database = {
             columns: ["device_id"]
             isOneToOne: false
             referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_events_screenshot_id_fkey"
+            columns: ["screenshot_id"]
+            isOneToOne: false
+            referencedRelation: "screenshots"
             referencedColumns: ["id"]
           },
         ]
@@ -822,6 +832,76 @@ export type Database = {
         }
         Relationships: []
       }
+      screenshots: {
+        Row: {
+          activity_event_id: string | null
+          bucket: string
+          capture_reason: string
+          captured_at: string
+          content_type: string
+          created_at: string
+          device_id: string
+          file_size_bytes: number | null
+          id: string
+          sha256: string | null
+          storage_path: string
+          user_id: string
+          violation_event_id: string | null
+        }
+        Insert: {
+          activity_event_id?: string | null
+          bucket?: string
+          capture_reason?: string
+          captured_at?: string
+          content_type?: string
+          created_at?: string
+          device_id: string
+          file_size_bytes?: number | null
+          id?: string
+          sha256?: string | null
+          storage_path: string
+          user_id: string
+          violation_event_id?: string | null
+        }
+        Update: {
+          activity_event_id?: string | null
+          bucket?: string
+          capture_reason?: string
+          captured_at?: string
+          content_type?: string
+          created_at?: string
+          device_id?: string
+          file_size_bytes?: number | null
+          id?: string
+          sha256?: string | null
+          storage_path?: string
+          user_id?: string
+          violation_event_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screenshots_activity_event_id_fkey"
+            columns: ["activity_event_id"]
+            isOneToOne: false
+            referencedRelation: "activity_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "screenshots_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "screenshots_violation_event_id_fkey"
+            columns: ["violation_event_id"]
+            isOneToOne: false
+            referencedRelation: "violation_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -973,6 +1053,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_device_online_status: {
+        Args: {
+          _last_seen: string
+          _stale_after?: string
+          _status: Database["public"]["Enums"]["device_status"]
+        }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -980,7 +1068,18 @@ export type Database = {
         }
         Returns: boolean
       }
+      mark_stale_devices_offline: {
+        Args: { _stale_after?: string }
+        Returns: number
+      }
       purge_expired_screenshots: { Args: never; Returns: number }
+      validate_device_command_payload: {
+        Args: {
+          _command_type: Database["public"]["Enums"]["device_command_type"]
+          _payload: Json
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       activity_event_outcome: "allowed" | "blocked" | "killed" | "deleted"
@@ -1000,6 +1099,10 @@ export type Database = {
         | "force_sync"
         | "disable_network"
         | "enable_network"
+        | "shutdown_device"
+        | "kill_process"
+        | "start_stream"
+        | "stop_stream"
       device_status: "active" | "inactive" | "disabled"
       request_status: "pending" | "approved" | "rejected"
       request_type: "domain" | "download" | "uninstall"
@@ -1155,6 +1258,10 @@ export const Constants = {
         "force_sync",
         "disable_network",
         "enable_network",
+        "shutdown_device",
+        "kill_process",
+        "start_stream",
+        "stop_stream",
       ],
       device_status: ["active", "inactive", "disabled"],
       request_status: ["pending", "approved", "rejected"],
