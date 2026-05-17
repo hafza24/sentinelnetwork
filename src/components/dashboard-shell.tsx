@@ -29,6 +29,7 @@ import {
   Sparkles,
   Building2,
   MonitorPlay,
+  BarChart3,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,7 @@ const NAV: NavItem[] = [
   { to: "/alerts", label: "Alerts", icon: AlertTriangle },
   { to: "/requests", label: "Requests", icon: Inbox },
   { to: "/telemetry", label: "Telemetry", icon: HeartPulse },
+  { to: "/reports", label: "Reports", icon: BarChart3 },
   { to: "/webhooks", label: "Webhooks", icon: Webhook, adminOnly: true },
   { to: "/retention", label: "Retention", icon: Camera, adminOnly: true },
   { to: "/backups", label: "Backups", icon: DatabaseIcon, adminOnly: true },
