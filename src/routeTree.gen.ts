@@ -21,6 +21,7 @@ import { Route as AuthedSchedulesRouteImport } from './routes/_authed.schedules'
 import { Route as AuthedRiskRouteImport } from './routes/_authed.risk'
 import { Route as AuthedRetentionRouteImport } from './routes/_authed.retention'
 import { Route as AuthedRequestsRouteImport } from './routes/_authed.requests'
+import { Route as AuthedReportsRouteImport } from './routes/_authed.reports'
 import { Route as AuthedProcessesRouteImport } from './routes/_authed.processes'
 import { Route as AuthedPeripheralsRouteImport } from './routes/_authed.peripherals'
 import { Route as AuthedOrganizationsRouteImport } from './routes/_authed.organizations'
@@ -100,6 +101,11 @@ const AuthedRetentionRoute = AuthedRetentionRouteImport.update({
 const AuthedRequestsRoute = AuthedRequestsRouteImport.update({
   id: '/requests',
   path: '/requests',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedReportsRoute = AuthedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedProcessesRoute = AuthedProcessesRouteImport.update({
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/organizations': typeof AuthedOrganizationsRoute
   '/peripherals': typeof AuthedPeripheralsRoute
   '/processes': typeof AuthedProcessesRoute
+  '/reports': typeof AuthedReportsRoute
   '/requests': typeof AuthedRequestsRoute
   '/retention': typeof AuthedRetentionRoute
   '/risk': typeof AuthedRiskRoute
@@ -266,6 +273,7 @@ export interface FileRoutesByTo {
   '/organizations': typeof AuthedOrganizationsRoute
   '/peripherals': typeof AuthedPeripheralsRoute
   '/processes': typeof AuthedProcessesRoute
+  '/reports': typeof AuthedReportsRoute
   '/requests': typeof AuthedRequestsRoute
   '/retention': typeof AuthedRetentionRoute
   '/risk': typeof AuthedRiskRoute
@@ -302,6 +310,7 @@ export interface FileRoutesById {
   '/_authed/organizations': typeof AuthedOrganizationsRoute
   '/_authed/peripherals': typeof AuthedPeripheralsRoute
   '/_authed/processes': typeof AuthedProcessesRoute
+  '/_authed/reports': typeof AuthedReportsRoute
   '/_authed/requests': typeof AuthedRequestsRoute
   '/_authed/retention': typeof AuthedRetentionRoute
   '/_authed/risk': typeof AuthedRiskRoute
@@ -338,6 +347,7 @@ export interface FileRouteTypes {
     | '/organizations'
     | '/peripherals'
     | '/processes'
+    | '/reports'
     | '/requests'
     | '/retention'
     | '/risk'
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/organizations'
     | '/peripherals'
     | '/processes'
+    | '/reports'
     | '/requests'
     | '/retention'
     | '/risk'
@@ -407,6 +418,7 @@ export interface FileRouteTypes {
     | '/_authed/organizations'
     | '/_authed/peripherals'
     | '/_authed/processes'
+    | '/_authed/reports'
     | '/_authed/requests'
     | '/_authed/retention'
     | '/_authed/risk'
@@ -514,6 +526,13 @@ declare module '@tanstack/react-router' {
       path: '/requests'
       fullPath: '/requests'
       preLoaderRoute: typeof AuthedRequestsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/reports': {
+      id: '/_authed/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthedReportsRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/processes': {
@@ -685,6 +704,7 @@ interface AuthedRouteChildren {
   AuthedOrganizationsRoute: typeof AuthedOrganizationsRoute
   AuthedPeripheralsRoute: typeof AuthedPeripheralsRoute
   AuthedProcessesRoute: typeof AuthedProcessesRoute
+  AuthedReportsRoute: typeof AuthedReportsRoute
   AuthedRequestsRoute: typeof AuthedRequestsRoute
   AuthedRetentionRoute: typeof AuthedRetentionRoute
   AuthedRiskRoute: typeof AuthedRiskRoute
@@ -714,6 +734,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedOrganizationsRoute: AuthedOrganizationsRoute,
   AuthedPeripheralsRoute: AuthedPeripheralsRoute,
   AuthedProcessesRoute: AuthedProcessesRoute,
+  AuthedReportsRoute: AuthedReportsRoute,
   AuthedRequestsRoute: AuthedRequestsRoute,
   AuthedRetentionRoute: AuthedRetentionRoute,
   AuthedRiskRoute: AuthedRiskRoute,
@@ -739,12 +760,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
